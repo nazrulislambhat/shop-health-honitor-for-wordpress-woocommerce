@@ -3,7 +3,7 @@
 Plugin Name: Shop Health Monitor for WooCommerce
 Plugin URI: https://nazrulislam.dev/products/shop-health-monitor-woocommerce
 Description: Monitors WooCommerce shop health, auto-detects failures, auto-flushes LiteSpeed cache once per incident, sends email & Slack alerts, includes dashboard widget, runs every 15 minutes.
-Version: 1.4
+Version: 1.4.1
 Author: Nazrul Islam
 Author URI: https://nazrulislam.dev/
 License: GPLv2 or later
@@ -35,7 +35,8 @@ class Woo_Shop_Health_Monitor {
 
     // 1. Add Configurable cron schedule
     public function add_custom_cron($schedules) {
-        $msg = sprintf(__('Every %d Minutes'), $this->check_interval);
+        /* translators: %d: check interval in minutes */
+        $msg = sprintf( __('Every %d Minutes', 'shop-health-monitor'), $this->check_interval );
         $schedules['woo_monitor_interval'] = [
             'interval' => $this->check_interval * 60,
             'display'  => $msg
@@ -45,6 +46,14 @@ class Woo_Shop_Health_Monitor {
 
     // 2. Schedule monitor event
     public function schedule_checker() {
+        
+        // Migration: Check if event exists but with wrong/old schedule (e.g. 'every_15_min')
+        $schedule = wp_get_schedule('woo_shop_monitor_event');
+        
+        if ($schedule && $schedule !== 'woo_monitor_interval') {
+            wp_clear_scheduled_hook('woo_shop_monitor_event');
+        }
+
         if (!wp_next_scheduled('woo_shop_monitor_event')) {
             wp_schedule_event(time(), 'woo_monitor_interval', 'woo_shop_monitor_event');
         }
