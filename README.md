@@ -1,6 +1,4 @@
- Checking Git Deployment 
- 
- <p align="center">
+<p align="center">
   <img src="https://raw.githubusercontent.com/nazrulislambhat/shop-health-monitor-for-wordpress-woocommerce/main/assets/banner-1544x500.png" alt="Shop Health Monitor Banner" />
 </p>
 
