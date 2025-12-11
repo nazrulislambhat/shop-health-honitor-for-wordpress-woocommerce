@@ -3,7 +3,7 @@
 Plugin Name: Shop Health Monitor for WooCommerce
 Plugin URI: https://nazrulislam.dev/products/shop-health-monitor-woocommerce
 Description: Monitors WooCommerce shop health, auto-detects failures, auto-flushes LiteSpeed cache once per incident, sends email & Slack alerts, includes dashboard widget, runs every 15 minutes.
-Version: 1.3
+Version: 1.4
 Author: Nazrul Islam
 Author URI: https://nazrulislam.dev/
 License: GPLv2 or later
@@ -277,37 +277,75 @@ class Woo_Shop_Health_Monitor {
             echo '</ul></div>';
         }
 
-        echo '<p style="margin-top:10px;"><a href="' . admin_url('?woo_manual_shop_check=1') .
-            '" class="button button-primary">🧪 Run Manual Check</a> <a href="' . admin_url('options-general.php?page=woo-shop-monitor') . '" class="button">Settings</a></p>';
+        echo '<p style="margin-top:10px;">
+            <a href="' . admin_url('?woo_manual_shop_check=1') . '" class="button button-primary" style="margin-right:5px;">🧪 Run Check</a>
+            <a href="' . admin_url('?woo_manual_test_alerts=1') . '" class="button" style="margin-right:5px; border-color: #d63638; color: #d63638;box-shadow:none;">⚡ Test Alerts</a>
+            <a href="' . admin_url('options-general.php?page=woo-shop-monitor') . '" class="button">Settings</a>
+        </p>';
     }
 
     // -------------------------
     // 6. Manual Check Button
     // -------------------------
+    // -------------------------
+    // 6. Manual Check & Test Button
+    // -------------------------
     public function handle_manual_check() {
         if (!current_user_can('manage_options')) return;
-        if (!isset($_GET['woo_manual_shop_check'])) return;
 
-        $products = wc_get_products([
-            'status' => 'publish',
-            'limit'  => 1
-        ]);
+        // 6a. Standard Manual Check (Check Only)
+        if (isset($_GET['woo_manual_shop_check'])) {
+            $products = wc_get_products([
+                'status' => 'publish',
+                'limit'  => 1
+            ]);
 
-        $status = empty($products) ? 'empty' : 'ok';
-        $prev_status = get_option('woo_shop_status');
+            $status = empty($products) ? 'empty' : 'ok';
+            $prev_status = get_option('woo_shop_status');
 
-        update_option('woo_shop_status', $status);
-        update_option('woo_shop_last_check', wp_date('Y-m-d H:i:s'));
-        
-        $msg = "Manual check completed. Status: <strong>$status</strong>.";
-        if ($status === 'empty' && $prev_status !== 'empty') {
-            // Trigger failure logic manually if needed, for now just log
-             $this->log_incident('failure', 'Manual check detected zero products.');
-             $this->flush_shop_cache();
-             $msg .= " Cache flushed.";
+            update_option('woo_shop_status', $status);
+            update_option('woo_shop_last_check', wp_date('Y-m-d H:i:s'));
+            
+            $msg = "Manual check completed. Status: <strong>$status</strong>.";
+            if ($status === 'empty' && $prev_status !== 'empty') {
+                 $this->log_incident('failure', 'Manual check detected zero products.');
+                 $this->flush_shop_cache();
+                 $msg .= " Cache flushed.";
+            }
+
+            wp_die("$msg<br><br><a href='" . admin_url() . "'>Return to Dashboard</a>");
         }
 
-        wp_die("$msg<br><br><a href='" . admin_url() . "'>Return to Dashboard</a>");
+        // 6b. Test Alerts (Force Flush + Notifications)
+        if (isset($_GET['woo_manual_test_alerts'])) {
+            
+            // 1. Log
+            $this->log_incident('test', 'User manually triggered a test alert.');
+
+            // 2. Flush
+            $this->flush_shop_cache();
+            update_option('woo_shop_last_flush', wp_date('Y-m-d H:i:s'));
+
+            // 3. Email
+            wp_mail(
+                get_option('admin_email'),
+                '[TEST] Shop Monitor Failure Alert',
+                "This is a TEST alert triggered manually.\n\nCache was flushed.\nTime: " . wp_date('Y-m-d H:i:s'),
+                ['Content-Type: text/plain; charset=UTF-8']
+            );
+
+            // 4. Slack
+            $this->send_slack_alert(
+                "🧪 *TEST ALERT: Shop Monitor*\nThis is a manual test of the notification system.\nCache flushed on: " . home_url()
+            );
+
+            wp_die("✅ <strong>Test Completed Successfully!</strong><br>
+            - Incident Logged<br>
+            - Cache Flushed<br>
+            - Email Sent to " . get_option('admin_email') . "<br>
+            - Slack Alert Sent (if configured)<br><br>
+            <a href='" . admin_url() . "'>Return to Dashboard</a>");
+        }
     }
 
     // -------------------------

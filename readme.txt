@@ -4,7 +4,7 @@ Tags: woocommerce, cache, litespeed, visibility, uptime, monitoring, email alert
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,7 @@ Perfect for preventing the infamous “blank shop / no products” issue caused 
 * Dashboard widget showing:
   - Current store health & last check time
   - Recent incident log
+* **Test Alerts Button**: Manually trigger flush & alerts to verify system
 * Manual check button
 * Zero configuration required (but customizable)
 
@@ -46,6 +47,13 @@ Perfect for preventing the infamous “blank shop / no products” issue caused 
 4. That’s it — monitoring begins automatically.
 
 == Frequently Asked Questions ==
+
+= How do I test if alerts are working? =
+Use the **"⚡ Test Alerts"** button in the Dashboard Widget. This will:
+1. Force a cache flush
+2. Send a test email to the admin
+3. Send a test notification to Slack
+4. Log a test entry in the history
 
 = Which cache plugins are supported? =
 We currently support auto-flushing for:
@@ -72,6 +80,9 @@ Not at all. It performs a very lightweight WooCommerce query at your configured 
 3. Example email alert
 
 == Changelog ==
+
+= 1.4 =
+* Added "Test Alerts" button to Dashboard Widget for manual verification (Flush + Email + Slack)
 
 = 1.3 =
 * Added support for multiple cache plugins (WP Rocket, W3TC, Autoptimize, WP Super Cache)
