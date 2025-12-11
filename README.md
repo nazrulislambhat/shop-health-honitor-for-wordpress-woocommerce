@@ -1,8 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nazrulislambhat/shop-health-honitor-for-wordpress-woocommerce/main/assets/banner-1544x500.png" alt="Shop Health Monitor Banner" />
+  <img src="https://raw.githubusercontent.com/nazrulislambhat/shop-health-monitor-for-wordpress-woocommerce/main/assets/banner-1544x500.png" alt="Shop Health Monitor Banner" />
 </p>
 
-# 🛒 Shop Health Monitor for WooCommerce  
+# 🛒 Shop Health Monitor for WooCommerce
+
 ### Automatic Product Visibility Monitoring • LiteSpeed Cache Auto-Flush • Instant Alerts
 
 [![WordPress Plugin](https://img.shields.io/badge/WordPress-Plugin-blue.svg)](#)
@@ -24,34 +25,40 @@ Perfect for WooCommerce stores hosted on **LiteSpeed**, **Hostinger**, or any se
 
 ## 🚀 Key Features
 
-### 🔍 Product Visibility Monitoring  
+### 🔍 Product Visibility Monitoring
+
 Continuously checks whether WooCommerce is returning published products.
 
-### ⚠ Instant Failure Alerts  
+### ⚠ Instant Failure Alerts
+
 If products suddenly become 0, the plugin sends:
 
-- Email alert  
-- Optional Slack alert  
+- Email alert
+- Optional Slack alert
 
-### ⚡ Automatic LiteSpeed Cache Flush  
+### ⚡ Automatic LiteSpeed Cache Flush
+
 If a failure is detected, LSCache is purged instantly to fix cache corruption issues.
 
-### 🔁 Immediate Post-Purge Recovery Check  
+### 🔁 Immediate Post-Purge Recovery Check
+
 After purging cache, the plugin waits ~5 seconds and checks again:
 
 - If products reappear → sends **Instant Recovery Alert**
 - If not → waits for next scheduled check
 
-### 📊 Dashboard Widget  
+### 📊 Dashboard Widget
+
 See key health metrics:
 
-- Current status  
-- Last check time  
-- Last failure  
-- Last cache flush  
-- Manual check button  
+- Current status
+- Last check time
+- Last failure
+- Last cache flush
+- Manual check button
 
-### 🕒 Scheduled Monitoring  
+### 🕒 Scheduled Monitoring
+
 Runs automatically every **15 minutes**.
 
 ---
@@ -72,5 +79,6 @@ Runs automatically every **15 minutes**.
 Clone this repository:
 
 ```bash
-git clone [https://github.com/nazrulislambhat/shop-health-honitor-for-wordpress-woocommerce.git]
+git clone [https://github.com/nazrulislambhat/shop-health-monitor-for-wordpress-woocommerce.git]
 
+```
