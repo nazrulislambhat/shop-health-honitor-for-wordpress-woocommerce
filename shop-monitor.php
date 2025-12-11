@@ -417,7 +417,10 @@ class Woo_Shop_Health_Monitor {
                 </tr>
             </table>
 
-            <p><button name="woo_shop_save_settings" class="button button-primary">Save Settings</button></p>
+            <p>
+                <button name="woo_shop_save_settings" class="button button-primary">Save Settings</button>
+                <a href="' . admin_url('?woo_manual_test_alerts=1') . '" class="button" style="margin-left:10px; border-color: #d63638; color: #d63638;">⚡ Test Alerts</a>
+            </p>
         </form>';
 
         // Incident History

@@ -82,7 +82,7 @@ Not at all. It performs a very lightweight WooCommerce query at your configured 
 == Changelog ==
 
 = 1.4 =
-* Added "Test Alerts" button to Dashboard Widget for manual verification (Flush + Email + Slack)
+* Added "Test Alerts" button to Settings Page for manual verification (Flush + Email + Slack)
 
 = 1.3 =
 * Added support for multiple cache plugins (WP Rocket, W3TC, Autoptimize, WP Super Cache)
